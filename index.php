@@ -2,6 +2,7 @@
 
 //Astronomic unit in mio. km
 $AE = 149600000;
+$_YEAR = 365.256;
 
 $solarobjects = array(
 					array(
@@ -13,7 +14,7 @@ $solarobjects = array(
 						'orbitTime' => null
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'rock planet', 
 						'name' => 'Mercury', 
 						'color' => '#AF9074', 
 						'diameter' => 4879.4, 
@@ -21,7 +22,7 @@ $solarobjects = array(
 						'orbitTime' => 87.969
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'rock planet', 
 						'name' => 'Venus', 
 						'color' => '#A7A39A', 
 						'diameter' => 12103.6, 
@@ -29,7 +30,7 @@ $solarobjects = array(
 						'orbitTime' => 224.701
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'rock planet', 
 						'name' => 'Earth', 
 						'color' => '#797DAD', 
 						'diameter' => 12756.32, 
@@ -38,7 +39,7 @@ $solarobjects = array(
 						'habitableCenter' => true
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'rock planet', 
 						'name' => 'Mars', 
 						'color' => '#D28F5B', 
 						'diameter' => 6792.4, 
@@ -46,7 +47,7 @@ $solarobjects = array(
 						'orbitTime' => 686.980
 					),					
 					array(
-						'type' => 'planet', 
+						'type' => 'gas planet', 
 						'name' => 'Jupiter', 
 						'color' => '#9A9697', 
 						'diameter' => 142984, 
@@ -54,7 +55,7 @@ $solarobjects = array(
 						'orbitTime' => 4328.9 	//11,86 years
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'gas planet', 
 						'name' => 'Saturn', 
 						'color' => '#C4AD8E', 
 						'diameter' => 120536, 
@@ -62,7 +63,7 @@ $solarobjects = array(
 						'orbitTime' => 10751.805 	//29,457 years
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'ice planet', 
 						'name' => 'Uranus', 
 						'color' => '#C6ECED', 
 						'diameter' => 51118, 
@@ -70,7 +71,7 @@ $solarobjects = array(
 						'orbitTime' => 30664.015 	//84,011 years
 					),
 					array(
-						'type' => 'planet', 
+						'type' => 'ice planet', 
 						'name' => 'Neptune', 
 						'color' => '#75AEFB', 
 						'diameter' => 49528, 
@@ -380,7 +381,7 @@ function initializeSolarSytem(paper) {
 			        offsety: 0,
 			        color: "#FFFF33"
 			    });
-		    
+
 		<?php else: ?>
 
 			<?php $xDifferences += $radius;?>
@@ -410,7 +411,7 @@ function initializeSolarSytem(paper) {
 			
 			var planetObj = paper.circle(<?php echo $distance + $xDifferences + $xOffset + $sunCenterX;?>, <?php echo $sunCenterY;?>, <?php echo $radius?>).attr({
 				fill: '<?php echo $solarobject['color']?>', 
-				stroke: 'white', 
+				stroke: '#3399AA', 
 				'stroke-width': 1
 				});
 
@@ -433,10 +434,10 @@ function initializeSolarSytem(paper) {
 			
 			planetObj.hover(
 				function(){
-					showObjectInfo($('#<?php echo $solarobject['name']?>-text'));
+					showObjectInfo($('#<?php echo $solarobject['name']?>-label'));
 			  	},
 			  	function(){
-			  		hideObjectInfo($('#<?php echo $solarobject['name']?>-text')); 	
+			  		hideObjectInfo($('#<?php echo $solarobject['name']?>-label')); 	
 			  	}
 			);
 			
@@ -468,7 +469,7 @@ function initializeSolarSytem(paper) {
 		THe blue ovals show the magnetic fields. Us the controls on the top to change the visualization.
 	</div>
 	
-	<div id="text">
+	<div id="labels">
 	<?php 
 	/**
  	 * We want to display the planets in HTML so we can access them later
@@ -476,18 +477,28 @@ function initializeSolarSytem(paper) {
 	?>			
 	<?php foreach($solarobjects as $solarobject):?>
 		
-		<div id="<?php echo $solarobject['name']?>-text">
+		<div id="<?php echo $solarobject['name']?>-label">
 			
-			<label class="title"><?php echo $solarobject['name'];?></label>
-			<br/>
-			<label>Type</label>
-			<span><?php echo $solarobject['type'];?></span>
-			<br/>
-			<label>Diameter</label>
-			<span><?php echo $solarobject['diameter'];?> KM</span>
-			<br/>
-			<label>Orbit Time</label>
-			<span><?php echo $solarobject['orbitTime'];?> Days</span>
+			<span class="title"><?php echo $solarobject['name'];?></span>
+			
+			<table>
+				<tr>
+					<td>Type:</td>
+					<td><?php echo $solarobject['type'];?></td>
+				</tr>
+				<tr>
+					<td>Diameter:</td>
+					<td><?php echo $solarobject['diameter'];?> km</td>
+				</tr>
+				<tr>
+					<td>Distance Sun:</td>
+					<td><?php echo $solarobject['distance'] * $AE?> mio. km (<?php echo $solarobject['distance']?> times earth distance)</td>
+				</tr>
+				<tr>
+					<td>Orbit Time:</td>
+					<td><?php echo $solarobject['orbitTime'];?> days (<?php echo round(($solarobject['orbitTime'] / $_YEAR), 2)?> years)</td>
+				</tr>
+			</table>
 			
 		</div>
 		
